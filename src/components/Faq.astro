@@ -1,0 +1,90 @@
+---
+import Icon from './Icon.astro';
+
+const faqs = [
+	{
+		q: 'What is SPAS used for?',
+		a: 'Keeping files out of a project\'s main Git repository while still versioning and sharing them. Common examples are test data, local setup such as <code>.env.local</code>, AI instructions such as <code>AGENTS.md</code>, roadmaps, and internal docs or logs. SPAS stores them in a separate GitHub repository and writes them back to their normal paths on every machine that links it.',
+	},
+	{
+		q: 'How is SPAS different from .gitignore or Git submodules?',
+		a: '<code>.gitignore</code> only stops Git from tracking a file, so the file has no history and stays on one machine. A submodule is a separate repository that your main repository records, and it must live in its own directory. SPAS changes nothing your main repository tracks, works with individual files at any path, and versions them in a separate GitHub repository.',
+	},
+	{
+		q: 'Are my files encrypted?',
+		a: 'No. Managed files are stored as ordinary Git content in the GitHub repository you link, so that repository\'s access controls are what protect them. Keep it private: SPAS warns you when it detects that the repository is publicly readable.',
+	},
+	{
+		q: 'How do my other machines or teammates get the files?',
+		a: 'Anyone with access to the asset repository can clone the project, run <code>spas link</code> with that repository, then <code>spas sync</code>. SPAS detects the default branch and writes the managed files into place.',
+	},
+	{
+		q: 'Does SPAS modify my .gitignore?',
+		a: 'No. SPAS writes a fenced block in <code>.git/info/exclude</code>, a local Git file most people never open. Your <code>.gitignore</code>, <code>.gitattributes</code>, and every committed config file stay untouched.',
+	},
+	{
+		q: 'What if the linked repository is public?',
+		a: 'SPAS warns you but doesn\'t stop. Except in dry runs, <code>spas link</code> and <code>spas sync</code> run an anonymous, credential-free <code>ls-remote</code> probe and print a warning if the repository is publicly readable. A failed probe doesn\'t prove the repository is private, so check its visibility on GitHub before you sync anything sensitive.',
+	},
+	{
+		q: 'Does it work with GitLab or Bitbucket?',
+		a: 'No. SPAS currently links only to repositories on github.com, over HTTPS or SSH.',
+	},
+	{
+		q: 'Which files can it manage?',
+		a: 'Any regular file your main repository doesn\'t track, including executables (Git modes 100644 and 100755). Adding a folder enrolls every regular file currently inside it. Filenames follow each machine\'s own rules, so <code>notes:2026.md</code> works on Linux but not on Windows. When a name doesn\'t work on a machine, SPAS reports the path instead of renaming the file. Symlinks, junctions, submodules, Git LFS pointers, and Git\'s own <code>.gitignore</code>, <code>.gitattributes</code>, and <code>.gitmodules</code> are rejected by design.',
+	},
+	{
+		q: 'Can I run SPAS in CI?',
+		a: 'Yes. Pass <code>--json</code> or <code>--non-interactive</code>, a commit <code>--message</code>, and explicit policies such as <code>--conflict</code>, <code>--existing-exclude</code>, and <code>--merge-protection</code>. Unattended runs turn off Git and SSH credential prompts, so set up an SSH key or stored HTTPS credentials before the run. <code>--timeout</code> sets a deadline, and every outcome maps to a documented exit code.',
+	},
+	{
+		q: 'What happens if a sync crashes halfway?',
+		a: 'Writes are staged in <code>.spas-tmp/</code> and renamed into place atomically, and risky steps record recovery state. Run <code>spas status</code> or <code>spas doctor</code> to see where it stopped before you continue.',
+	},
+];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqs.map(({ q, a }) => ({
+		'@type': 'Question',
+		name: q,
+		acceptedAnswer: { '@type': 'Answer', text: a.replace(/<[^>]+>/g, '') },
+	})),
+};
+---
+
+<section id="faq" class="section relative mx-auto max-w-6xl px-5 md:px-8">
+	<div class="lg:grid lg:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)] lg:gap-16">
+		<div class="lg:sticky lg:top-28 lg:self-start" data-reveal>
+			<h2 class="section-title" data-split>
+				Frequently asked questions
+			</h2>
+		</div>
+
+		<div class="mt-10 border-t border-line md:mt-12 lg:mt-0" data-reveal style="--reveal-delay: 100ms">
+			{
+			faqs.map((f) => (
+				<details class="faq-item group">
+					<summary class="flex items-center justify-between gap-4 py-5 text-left text-[0.98rem] font-medium text-text">
+						{f.q}
+						<Icon name="plus" size={16} class="faq-icon shrink-0 text-faint" />
+					</summary>
+					<div class="faq-body pb-5 pr-10 text-[0.88rem] leading-relaxed text-dim" set:html={f.a} />
+				</details>
+				))
+			}
+		</div>
+	</div>
+	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</section>
+
+<style>
+	.faq-body :global(code) {
+		font-family: var(--font-mono);
+		font-size: 0.82em;
+		color: var(--color-accent-soft);
+		white-space: nowrap;
+	}
+</style>

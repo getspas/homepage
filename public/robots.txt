@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://getspas.dev/sitemap-index.xml

@@ -1,0 +1,52 @@
+# SPAS
+
+> SPAS (Secure Private Asset Sync) is an open-source command-line tool for developers. It keeps files that should not be in a project's main Git repository, such as test data, local setup, AI instructions, roadmaps, and internal docs, at their normal paths in the workspace. SPAS excludes them from the main repository through `.git/info/exclude`, versions them in a separate GitHub repository, and writes them back to the same paths on other machines and for teammates who link that repository.
+
+Key facts:
+
+- Platforms: Linux, macOS, and Windows on amd64 and arm64.
+- Requirements: Git 2.43.1 or newer, and Git credentials (SSH or HTTPS) with access to the linked GitHub repository.
+- License: AGPL-3.0. Free to use.
+- Commands: `link`, `add`, `remove`, `sync`, `status`, `diff`, `doctor`, `unlink`, `completion`, `version`.
+- SPAS never edits the project's `.gitignore`. It writes a fenced block in `.git/info/exclude`.
+- Managed files are stored as ordinary Git content in the linked GitHub repository. SPAS does not encrypt them; keep that repository private. Except in dry runs, `spas link` and `spas sync` run an anonymous `git ls-remote` probe and print a warning if the repository is publicly readable. The warning does not block the command, and a failed probe does not prove the repository is private.
+- Only repositories on github.com are supported.
+- SPAS manages regular files (Git modes 100644 and 100755) that the main repository does not track. Adding a folder enrolls the regular files currently inside it. Symlinks, directory junctions, submodules, Git LFS pointers, `.gitignore`, `.gitattributes`, and `.gitmodules` are rejected.
+- Filenames follow each machine's Git and filesystem rules. A name such as `notes:2026.md` works on Linux but not on Windows; SPAS reports the failing path instead of renaming the file.
+- `spas unlink` keeps workspace files by default. `--remove-files` deletes synced files, and discarding unsynced changes needs separate approval (`--discard-unsynced-changes` in scripts).
+- Scriptable: `--json` output, `--non-interactive` mode, explicit policy flags, `--timeout` deadlines, and documented exit codes. Unattended runs turn off Git and SSH credential prompts, so credentials must be set up before the run.
+
+## Install
+
+- Homebrew (macOS, Linux; formula that builds from source): `brew install getspas/tap/spas`
+- Scoop (Windows): `scoop bucket add getspas https://github.com/getspas/scoop-bucket`, then `scoop install getspas/spas`
+- Debian, Ubuntu, Fedora, and compatible systems: download the .deb or .rpm from https://github.com/getspas/spas/releases/latest and follow the installation guide.
+- From source (Go 1.26.9 or newer): `go install -trimpath github.com/getspas/spas@latest`
+
+## Quick start
+
+```bash
+# in the project workspace, with an empty GitHub repository for the files
+spas link your-org/project-assets --transport ssh --branch main
+spas add testdata/ .env.local AGENTS.md
+spas sync --dry-run
+spas sync
+```
+
+On another machine or for a teammate: clone the project, run `spas link your-org/project-assets --transport ssh`, then `spas sync`.
+
+## Docs
+
+- [Installation](https://github.com/getspas/spas/wiki/Installation): package managers, verification, shell completion
+- [Quick start](https://github.com/getspas/spas/wiki/Quick-start): link a workspace and run the first sync
+- [Command reference](https://github.com/getspas/spas/wiki/Command-reference): every command, flag, and exit code
+- [JSON output schema](https://github.com/getspas/spas/wiki/JSON-output-schema): structured output for scripts and CI
+- [Schema contracts](https://github.com/getspas/spas/wiki/Schemas): persisted-state and CLI JSON schema versions
+- [Safety and limitations](https://github.com/getspas/spas/wiki/Safety-and-limitations): supported files, Git invariants, resource limits
+- [Troubleshooting](https://github.com/getspas/spas/wiki/Troubleshooting): diagnose errors with `spas doctor`
+
+## Optional
+
+- [Source code](https://github.com/getspas/spas)
+- [Releases](https://github.com/getspas/spas/releases)
+- [Discussions](https://github.com/getspas/spas/discussions)

@@ -1,0 +1,97 @@
+---
+import Icon from './Icon.astro';
+
+const cases = [
+	{
+		icon: 'database',
+		title: 'Test data',
+		desc: 'Fixtures, sample datasets, and API mocks that tests read from disk.',
+		paths: ['testdata/', 'mocks/api.json'],
+	},
+	{
+		icon: 'file-code',
+		title: 'Local setup',
+		desc: 'Environment files, developer overrides, and machine-specific config.',
+		paths: ['.env.local', 'config/dev.json'],
+	},
+	{
+		icon: 'file-text',
+		title: 'AI instructions',
+		desc: 'Agent rules and prompts your AI coding tools read from the project.',
+		paths: ['AGENTS.md', 'CLAUDE.md', '.cursor/rules/'],
+	},
+	{
+		icon: 'map-trifold',
+		title: 'Roadmaps and plans',
+		desc: "Roadmaps, specs, and drafts that aren't ready for the shared repo.",
+		paths: ['ROADMAP.md', 'docs/plans/'],
+	},
+	{
+		icon: 'folder-open',
+		title: 'Internal docs and logs',
+		desc: 'Team notes, decision logs, and work journals that belong with the code.',
+		paths: ['docs/internal/', 'notes/decisions.md'],
+	},
+	{
+		icon: 'terminal-window',
+		title: 'Personal scripts',
+		desc: 'Helper scripts you run locally. SPAS keeps the executable bit.',
+		paths: ['scripts/reset-db.sh', 'bin/'],
+	},
+	{
+		icon: 'gear-six',
+		title: 'Editor settings',
+		desc: 'Launch configs and workspace settings you want on every machine.',
+		paths: ['.vscode/launch.json', '.idea/workspace.xml'],
+	},
+	{
+		icon: 'graduation-cap',
+		title: 'Workshop solutions',
+		desc: 'Answer keys and reference solutions beside a public exercise repo.',
+		paths: ['solutions/', 'grading/'],
+	},
+];
+---
+
+<section id="use-cases" class="section relative mx-auto max-w-6xl px-5 md:px-8">
+	<div class="max-w-2xl" data-reveal>
+		<h2 class="section-title" data-split>
+			Anything you keep beside the code, not in it.
+		</h2>
+		<p class="section-lead">
+			SPAS works with any regular file or folder your main repository doesn't track. Some places to start:
+		</p>
+	</div>
+
+	<ul class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-12 lg:grid-cols-3">
+		{
+			cases.map((c, i) => (
+				<li class="tile p-6" data-reveal style={`--reveal-delay: ${(i % 3) * 80}ms`}>
+					<Icon name={c.icon} size={22} class="text-accent" />
+					<h3 class="mt-4 font-display text-lg font-medium tracking-[-0.01em]">{c.title}</h3>
+					<p class="mt-2 text-[0.88rem] leading-relaxed text-dim">{c.desc}</p>
+					<div class="mt-4 flex flex-wrap gap-2 font-mono text-[0.72rem] text-dim">
+						{c.paths.map((p) => (
+							<span class="rounded-md border border-line bg-ink/60 px-2 py-1">
+								{p}
+							</span>
+						))}
+					</div>
+				</li>
+			))
+		}
+		<li class="tile border-dashed p-6" data-reveal style="--reveal-delay: 160ms">
+			<Icon name="plus" size={22} class="text-accent" />
+			<h3 class="mt-4 font-display text-lg font-medium tracking-[-0.01em]">Anything else</h3>
+			<p class="mt-2 text-[0.88rem] leading-relaxed text-dim">
+				Any other regular file your main repository doesn't track. Point{' '}
+				<span class="font-mono text-[0.82em]">spas&nbsp;add</span> at its path.
+			</p>
+			<div class="mt-4 flex flex-wrap gap-2 font-mono text-[0.72rem] text-dim">
+				<span class="rounded-md border border-line bg-ink/60 px-2 py-1">
+					spas&nbsp;add &lt;path&gt;
+				</span>
+			</div>
+		</li>
+	</ul>
+</section>

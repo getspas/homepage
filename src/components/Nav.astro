@@ -1,0 +1,100 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+---
+
+<div id="nav-sentinel" aria-hidden="true" class="absolute top-0 h-px w-full"></div>
+<header class="site-nav fixed inset-x-0 top-0 z-50">
+	<nav class="nav-shell mx-auto flex h-16 max-w-6xl items-center justify-between px-5 md:px-8">
+		<a href="/" class="flex items-center gap-2.5 text-text" aria-label="SPAS home">
+			<Logo size={26} />
+			<span class="font-display text-[1.05rem] font-bold tracking-tight">spas</span>
+		</a>
+
+		<div class="hidden items-center gap-6 text-[0.83rem] lg:flex">
+			<a class="nav-link" href="/#use-cases">Use cases</a>
+			<a class="nav-link" href="/#how-it-works">How it works</a>
+			<a class="nav-link" href="/#features">Features</a>
+			<a class="nav-link" href="/#commands">Commands</a>
+			<a class="nav-link" href="/#quickstart">Quickstart</a>
+			<a class="nav-link" href="https://github.com/getspas/spas/wiki" target="_blank" rel="noopener">Docs</a>
+		</div>
+
+		<div class="flex items-center gap-3">
+			<button
+				id="theme-toggle"
+				type="button"
+				class="btn btn-ghost h-9 w-9 justify-center p-0"
+				aria-label="Toggle theme"
+				hidden
+			>
+				<Icon name="sun" size={16} class="theme-icon-sun" />
+				<Icon name="moon" size={16} class="theme-icon-moon" />
+			</button>
+			<a
+				class="nav-link hidden text-[0.83rem] xl:block"
+				href="https://github.com/getspas/spas/releases/latest"
+				target="_blank"
+				rel="noopener"
+			>
+				Releases
+			</a>
+			<a
+				href="https://github.com/getspas/spas"
+				target="_blank"
+				rel="noopener"
+				class="btn btn-ghost h-9 px-3.5 text-[0.83rem]"
+				aria-label="SPAS on GitHub"
+			>
+				<Icon name="github-logo" size={17} />
+				<span class="hidden sm:inline">GitHub</span>
+			</a>
+			<button
+				id="nav-menu-btn"
+				type="button"
+				class="btn btn-ghost h-10 w-10 justify-center p-0 lg:hidden"
+				aria-expanded="false"
+				aria-controls="mobile-menu"
+				aria-label="Open menu"
+			>
+				<Icon name="list" size={19} class="menu-icon-open" />
+				<Icon name="x" size={17} class="menu-icon-close hidden" />
+			</button>
+		</div>
+		<span class="nav-progress" aria-hidden="true"></span>
+	</nav>
+
+	<div
+		id="mobile-menu"
+		class="mobile-menu absolute inset-x-0 top-[calc(100%+0.5rem)] mx-auto w-[min(68rem,calc(100%-1.5rem))] rounded-2xl border border-line bg-raised lg:hidden"
+		style="box-shadow: var(--elev-2)"
+	>
+		<nav class="px-4 py-1" aria-label="Mobile">
+			<a class="mobile-nav-link" href="/#use-cases" style="--i: 0">Use cases</a>
+			<a class="mobile-nav-link" href="/#how-it-works" style="--i: 1">How it works</a>
+			<a class="mobile-nav-link" href="/#features" style="--i: 2">Features</a>
+			<a class="mobile-nav-link" href="/#commands" style="--i: 3">Commands</a>
+			<a class="mobile-nav-link" href="/#quickstart" style="--i: 4">Quickstart</a>
+			<a
+				class="mobile-nav-link"
+				style="--i: 5"
+				href="https://github.com/getspas/spas/wiki"
+				target="_blank"
+				rel="noopener"
+			>
+				Docs
+				<Icon name="arrow-up-right" size={14} class="text-faint" />
+			</a>
+			<a
+				class="mobile-nav-link"
+				style="--i: 6"
+				href="https://github.com/getspas/spas/releases/latest"
+				target="_blank"
+				rel="noopener"
+			>
+				Releases
+				<Icon name="arrow-up-right" size={14} class="text-faint" />
+			</a>
+		</nav>
+	</div>
+</header>

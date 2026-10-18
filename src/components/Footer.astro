@@ -1,0 +1,126 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import Install from './Install.astro';
+import { installGuideUrl } from '../lib/install';
+
+const cols = [
+	{
+		title: 'Product',
+		links: [
+			{ label: 'Documentation', href: 'https://github.com/getspas/spas/wiki' },
+			{ label: 'Installation', href: installGuideUrl },
+			{ label: 'Quick Start', href: 'https://github.com/getspas/spas/wiki/Quick-start' },
+			{ label: 'Command Reference', href: 'https://github.com/getspas/spas/wiki/Command-reference' },
+			{ label: 'Safety & Limitations', href: 'https://github.com/getspas/spas/wiki/Safety-and-limitations' },
+		],
+	},
+	{
+		title: 'Project',
+		links: [
+			{ label: 'GitHub', href: 'https://github.com/getspas/spas' },
+			{ label: 'Releases', href: 'https://github.com/getspas/spas/releases' },
+			{ label: 'Issues', href: 'https://github.com/getspas/spas/issues' },
+			{ label: 'Discussions', href: 'https://github.com/getspas/spas/discussions' },
+		],
+	},
+	{
+		title: 'Legal',
+		links: [
+			{ label: 'AGPL-3.0 License', href: 'https://github.com/getspas/spas/blob/main/LICENSE' },
+			{ label: 'Security Policy', href: 'https://github.com/getspas/spas/blob/main/SECURITY.md' },
+			{ label: 'Contributing', href: 'https://github.com/getspas/spas/blob/main/CONTRIBUTING.md' },
+		],
+	},
+];
+---
+
+<!-- CTA -->
+<section class="relative overflow-hidden">
+	<div
+		class="pointer-events-none absolute inset-x-0 bottom-0 h-[420px]"
+		style="background: radial-gradient(ellipse 60% 100% at 50% 100%, color-mix(in oklab, var(--color-accent) 10%, transparent), transparent 70%);"
+		aria-hidden="true"
+	></div>
+	<div class="relative mx-auto max-w-6xl px-5 py-[clamp(5rem,10vw,8rem)] text-center md:px-8">
+		<h2
+			class="mx-auto max-w-2xl font-display font-semibold tracking-[-0.03em] text-[2rem] leading-[1.08] md:text-[3.25rem] md:leading-[1.03]"
+			data-reveal
+			data-split
+		>
+			Out of your repo. On every machine.{' '}
+			<span class="text-accent">Shared with your team.</span>
+		</h2>
+		<p
+			class="mx-auto mt-4 max-w-md text-base leading-relaxed text-dim"
+			data-reveal
+			style="--reveal-delay: 90ms"
+		>
+			Free and open source under AGPL-3.0. Your files live in a GitHub repository you control.
+		</p>
+		<div
+			class="mt-9 flex flex-col items-center gap-5"
+			data-reveal
+			style="--reveal-delay: 170ms"
+		>
+			<Install id="install-cta" class="mx-auto w-full max-w-[34rem] text-left" />
+			<a
+				href="https://github.com/getspas/spas"
+				target="_blank"
+				rel="noopener"
+				class="btn btn-primary h-11 px-5 text-[0.88rem]"
+			>
+				<Icon name="github-logo" size={17} />
+				Star on GitHub
+			</a>
+		</div>
+	</div>
+</section>
+
+<footer class="border-t border-line">
+	<div class="mx-auto max-w-6xl px-5 py-14 md:px-8">
+		<div class="grid gap-10 md:grid-cols-[1.2fr_repeat(3,auto)] md:gap-16">
+			<div>
+				<a href="/" class="flex items-center gap-2.5" aria-label="SPAS home">
+					<Logo size={26} />
+					<span class="font-display text-[1.05rem] font-bold tracking-tight">spas</span>
+				</a>
+				<p class="mt-4 max-w-xs text-[0.82rem] leading-relaxed text-dim">
+					Secure Private Asset Sync. Private files, normal paths, separate history.
+				</p>
+				<p class="mt-4 font-mono text-[0.7rem] text-faint">
+					linux · macOS · windows &nbsp;/&nbsp; amd64 · arm64
+				</p>
+			</div>
+			{
+				cols.map((col) => (
+					<div>
+						<h3 class="ui-label text-faint">
+							{col.title}
+						</h3>
+						<ul class="mt-4 space-y-2.5">
+							{col.links.map((l) => (
+								<li>
+									<a
+										href={l.href}
+										target="_blank"
+										rel="noopener"
+										class="text-[0.85rem] text-dim transition-colors hover:text-accent-soft"
+									>
+										{l.label}
+									</a>
+								</li>
+							))}
+						</ul>
+					</div>
+				))
+			}
+		</div>
+		<div
+			class="mt-12 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-6 text-[0.78rem] text-faint"
+		>
+			<span>© 2026 getspas contributors</span>
+			<span class="font-mono">requires git ≥ 2.43.1</span>
+		</div>
+	</div>
+</footer>

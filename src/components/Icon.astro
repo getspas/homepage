@@ -1,0 +1,33 @@
+---
+import { icons } from '../lib/icons';
+
+interface Props {
+	name: string;
+	class?: string;
+	size?: number | string;
+}
+
+const { name, class: className = '', size = 18 } = Astro.props;
+const svg = icons[name];
+
+if (!svg) {
+	throw new Error(`Icon "${name}" not found in icon map`);
+}
+
+// Inject sizing into the svg tag
+const inner = svg.replace(
+	'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor">',
+	''
+).replace('</svg>', '');
+---
+
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	viewBox="0 0 256 256"
+	fill="currentColor"
+	width={size}
+	height={size}
+	class={className}
+	aria-hidden="true"
+	set:html={inner}
+/>

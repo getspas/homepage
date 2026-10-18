@@ -1,0 +1,119 @@
+---
+import Icon from './Icon.astro';
+---
+
+<section id="features" class="section relative mx-auto max-w-6xl px-5 md:px-8">
+	<div class="max-w-2xl" data-reveal>
+		<h2 class="section-title" data-split>
+			One job, done carefully.
+		</h2>
+		<p class="section-lead">
+			SPAS manages the files you keep out of your main repo, and nothing else. A half-finished sync is worse than none.
+		</p>
+	</div>
+
+	<div class="mt-10 grid grid-cols-1 gap-4 md:mt-12 md:grid-cols-6">
+		<!-- zero path rewiring -->
+		<div class="tile p-6 md:col-span-2" data-reveal>
+			<Icon name="path" size={22} class="text-accent" />
+			<h3 class="mt-4 font-display text-lg font-medium tracking-[-0.01em]">
+				Zero path rewiring
+			</h3>
+			<p class="mt-2 text-[0.88rem] leading-relaxed text-dim">
+				Files live at the exact paths your build scripts, tests, IDE, and AI tools expect. No symlinks, no moved files, no path rewrites.
+			</p>
+			<div class="mt-5 flex flex-wrap gap-2 font-mono text-[0.72rem] text-dim">
+				{
+					['testdata/', '.env.local', 'AGENTS.md'].map((p) => (
+						<span class="rounded-md border border-line bg-ink/60 px-2 py-1">{p}</span>
+					))
+				}
+			</div>
+		</div>
+
+		<!-- clean main history (wide) -->
+		<div class="tile p-6 md:col-span-4 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-start md:gap-6" data-reveal style="--reveal-delay: 80ms">
+			<div class="md:self-center">
+				<Icon name="file-dashed" size={22} class="text-accent" />
+				<h3 class="mt-4 font-display text-lg font-medium tracking-[-0.01em]">Clean main history</h3>
+				<p class="mt-2 text-[0.88rem] leading-relaxed text-dim">
+					SPAS owns a fenced block in <span class="font-mono text-[0.82em]">.git/info/exclude</span>.
+					Your <span class="font-mono text-[0.82em]">.gitignore</span> stays untouched.
+				</p>
+			</div>
+			<pre
+				class="mt-4 overflow-x-auto rounded-lg border border-line bg-ink/70 p-3 font-mono text-[0.68rem] leading-relaxed text-faint md:mt-0 md:self-stretch"
+			><span class="text-accent"># BEGIN SPAS</span> link=8f9a2b4c
+/.spas-tmp/
+/.env.local
+/AGENTS.md
+/testdata/mock-api.json
+<span class="text-accent"># END SPAS</span> link=8f9a2b4c</pre>
+		</div>
+
+		<!-- dedicated history -->
+		<div class="tile p-6 md:col-span-2" data-reveal>
+			<Icon name="git-branch" size={22} class="text-accent" />
+			<h3 class="mt-4 font-display text-lg font-medium tracking-[-0.01em]">Shared across machines and teammates</h3>
+			<p class="mt-2 text-[0.88rem] leading-relaxed text-dim">
+				On a new machine or a teammate's laptop, link the same asset repo and run{' '}
+				<span class="font-mono text-[0.82em]">spas sync</span>. Changes merge as Git
+				commits, and conflicts pause until you resolve them.
+			</p>
+		</div>
+
+		<!-- safety -->
+		<div class="tile p-6 md:col-span-2" data-reveal style="--reveal-delay: 80ms">
+			<Icon name="shield-check" size={22} class="text-accent" />
+			<h3 class="mt-4 font-display text-lg font-medium tracking-[-0.01em]">Safety by default</h3>
+			<p class="mt-2 text-[0.88rem] leading-relaxed text-dim">
+				Advisory locks, atomic renames, dry-run previews, and recovery state. When
+				something is ambiguous, SPAS stops and tells you why.
+			</p>
+		</div>
+
+		<!-- privacy probe -->
+		<div class="tile p-6 md:col-span-2" data-reveal style="--reveal-delay: 160ms">
+			<Icon name="eye" size={22} class="text-accent" />
+			<h3 class="mt-4 font-display text-lg font-medium tracking-[-0.01em]">Privacy probe</h3>
+			<p class="mt-2 text-[0.88rem] leading-relaxed text-dim">
+				An anonymous <span class="font-mono text-[0.82em]">ls-remote</span> check warns you when the
+				linked repository is publicly readable.
+			</p>
+		</div>
+
+		<!-- scriptable -->
+		<div class="tile p-6 md:col-span-3" data-reveal>
+			<Icon name="file-code" size={22} class="text-accent" />
+			<h3 class="mt-4 font-display text-lg font-medium tracking-[-0.01em]">Made for scripts and CI</h3>
+			<p class="mt-2 text-[0.88rem] leading-relaxed text-dim">
+				Structured <span class="font-mono text-[0.82em]">--json</span> output, explicit conflict
+				policies, and stable exit codes. Pipelines can branch on every outcome.
+			</p>
+			<pre
+				class="mt-4 overflow-x-auto rounded-lg border border-line bg-ink/70 p-3 font-mono text-[0.68rem] leading-relaxed text-dim"
+			>spas sync <span class="t-flags">--json -m "Update CI assets" \
+  --conflict abort --existing-exclude preserve \
+  --merge-protection enable --timeout 5m</span></pre>
+		</div>
+
+		<!-- cross platform -->
+		<div class="tile p-6 md:col-span-3" data-reveal style="--reveal-delay: 80ms">
+			<Icon name="devices" size={22} class="text-accent" />
+			<h3 class="mt-4 font-display text-lg font-medium tracking-[-0.01em]">Runs everywhere</h3>
+			{/* winget-pending: restore "packaged for Homebrew, WinGet, and Scoop" */}
+			<p class="mt-2 text-[0.88rem] leading-relaxed text-dim">
+				One self-contained binary, packaged for Homebrew and Scoop, plus .deb
+				and .rpm downloads. Git 2.43.1+ is the only runtime requirement. Every release
+				ships SHA-256 checksums and GitHub build provenance.
+			</p>
+			<div class="mt-4 flex flex-wrap gap-2 font-mono text-[0.72rem] text-dim">
+				{
+					['linux · amd64 / arm64', 'macOS · amd64 / arm64', 'windows · amd64 / arm64'].map((p) => (
+						<span class="rounded-md border border-line bg-ink/60 px-2.5 py-1.5">{p}</span>
+					))
+				}
+			</div>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,74 @@
+---
+import Icon from './Icon.astro';
+
+const rows = [
+	{
+		before: 'Files parked outside the project, or symlinked back in',
+		after: 'Files stay at the paths your tools already expect',
+	},
+	{
+		before: '.gitignore clutter and accidental commits',
+		after: 'Excluded locally in .git/info/exclude, so .gitignore stays clean',
+	},
+	{
+		before: 'Manual copying between machines and teammates',
+		after: 'Every machine and teammate gets the same files with spas sync',
+	},
+	{
+		before: 'No history for private changes',
+		after: 'Full Git history in a separate repository',
+	},
+];
+---
+
+<section class="section relative mx-auto max-w-6xl px-5 md:px-8">
+	<div class="max-w-2xl" data-reveal>
+		<h2 class="section-title" data-split>
+			Not every file belongs in the shared repo.
+		</h2>
+		<p class="section-lead">
+			These files have to sit next to the code, but committing them shows them to every
+			collaborator and bloats the project's history. The usual workarounds each break
+			something.
+		</p>
+	</div>
+
+	<div
+		class="mt-10 overflow-hidden rounded-2xl border border-line bg-raised/60 md:mt-12"
+		data-reveal
+		style="--reveal-delay: 120ms"
+	>
+		<table class="w-full border-collapse" role="table">
+			<thead role="rowgroup">
+				<tr
+					role="row"
+					class="grid grid-cols-[1fr_1fr] border-b border-line"
+				>
+					<th scope="col" role="columnheader" class="ui-label px-4 py-3 text-left text-faint sm:px-5 sm:py-3.5 md:px-7">Workarounds</th>
+					<th scope="col" role="columnheader" class="ui-label border-l border-line px-4 py-3 text-left text-accent sm:px-5 sm:py-3.5 md:px-7">With SPAS</th>
+				</tr>
+			</thead>
+			<tbody role="rowgroup">
+				{
+					rows.map((row, i) => (
+						<tr
+							role="row"
+							class="grid grid-cols-[1fr_1fr] border-b border-line/60 text-[0.8rem] leading-relaxed last:border-b-0 sm:text-[0.86rem] md:text-[0.95rem]"
+							data-reveal
+							style={`--reveal-delay: ${160 + i * 70}ms`}
+						>
+							<td role="cell" class="flex items-start gap-2.5 px-4 py-3.5 text-faint sm:gap-3 sm:px-5 sm:py-4 md:px-7 md:py-4">
+								<Icon name="x" size={15} class="mt-1 shrink-0 opacity-60" />
+								<span>{row.before}</span>
+							</td>
+							<td role="cell" class="flex items-start gap-2.5 border-l border-line px-4 py-3.5 text-text sm:gap-3 sm:px-5 sm:py-4 md:px-7 md:py-4">
+								<Icon name="check" size={16} class="mt-1 shrink-0 text-ok" />
+								<span>{row.after}</span>
+							</td>
+						</tr>
+					))
+				}
+			</tbody>
+		</table>
+	</div>
+</section>

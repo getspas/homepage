@@ -1,0 +1,26 @@
+---
+import type { InstallChannel } from '../lib/install';
+
+interface Props {
+	segments: InstallChannel['note'];
+}
+
+const { segments } = Astro.props;
+---
+
+{
+	segments.map((seg) =>
+		typeof seg === 'string' ? (
+			seg
+		) : (
+			<a
+				href={seg.href}
+				target="_blank"
+				rel="noopener"
+				class="text-dim underline decoration-line-strong underline-offset-4 transition-colors hover:text-accent-soft"
+			>
+				{seg.text}
+			</a>
+		)
+	)
+}

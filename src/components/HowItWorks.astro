@@ -1,0 +1,312 @@
+---
+import Icon from './Icon.astro';
+
+const files = [
+	{ name: 'README.md', kind: 'file', managed: false },
+	{ name: 'src/', kind: 'folder', managed: false },
+	{ name: 'go.mod', kind: 'file', managed: false },
+	{ name: 'testdata/', kind: 'folder', managed: true },
+	{ name: '.env.local', kind: 'file', managed: true },
+	{ name: 'AGENTS.md', kind: 'file', managed: true },
+	{ name: 'docs/', kind: 'folder', managed: false },
+];
+---
+
+<section id="how-it-works" class="section relative mx-auto max-w-6xl px-5 md:px-8">
+	<div class="max-w-2xl" data-reveal>
+		<h2 class="section-title" data-split>
+			Two histories, one workspace.
+		</h2>
+		<p class="section-lead">
+			Managed files stay in your working tree, where your tools expect them. Your main repository ignores them, and SPAS versions them in a separate GitHub repository.
+		</p>
+	</div>
+
+	<!-- Desktop diagram -->
+	<div
+		class="diagram mt-10 hidden md:mt-12 lg:grid lg:grid-cols-[minmax(0,1fr)_132px_minmax(0,0.82fr)] lg:items-stretch"
+		data-reveal
+		data-flow
+	>
+		<!-- workspace card -->
+		<div class="diagram-card rounded-2xl border border-line bg-raised/70">
+			<div
+				class="ui-label relative flex items-center justify-between border-b border-line px-5 py-3 text-faint"
+				data-port="git"
+			>
+				<span>Project workspace</span>
+				<span class="font-mono normal-case tracking-normal">~/my-app</span>
+				<span
+					class="absolute -right-[5px] top-1/2 h-2 w-2 -translate-y-1/2 rounded-full border-2 border-raised bg-line-strong"
+				></span>
+			</div>
+			<ul class="px-2.5 py-2.5 font-mono text-[0.83rem]">
+				{
+					files.map((f) => (
+						<li
+							class:list={[
+								'relative flex items-center gap-2.5 rounded-md px-3 py-[9px]',
+								f.managed
+									? 'file-row-managed border-l-2 border-accent bg-accent/[0.09] text-accent-soft'
+									: 'border-l-2 border-transparent text-dim',
+							]}
+							data-port={f.managed ? 'spas' : undefined}
+						>
+							<Icon
+								name={f.kind === 'folder' ? 'folder-open' : 'file-text'}
+								size={15}
+								class={f.managed ? 'text-accent' : 'text-faint'}
+							/>
+							{f.name}
+							{f.managed && (
+								<span class="absolute -right-[15px] top-1/2 h-2 w-2 -translate-y-1/2 rounded-full border-2 border-raised bg-accent" />
+							)}
+						</li>
+					))
+				}
+			</ul>
+			<div class="border-t border-line px-5 py-3 text-[0.7rem] text-faint">
+				managed files excluded via <span class="font-mono text-dim">.git/info/exclude</span>
+			</div>
+		</div>
+
+		<!-- connector channel -->
+		<div class="diagram-connectors relative" aria-hidden="true">
+			<svg
+				class="absolute inset-0 h-full w-full overflow-visible"
+				viewBox="0 0 120 330"
+				preserveAspectRatio="none"
+				fill="none"
+			>
+				<!-- git push (dim, to main repo) -->
+				<g data-route="git">
+					<path
+						d="M 0 50 C 60 50, 60 50, 120 50"
+						stroke="var(--color-line-strong)"
+						stroke-width="1.5"
+						stroke-dasharray="4 5"
+						vector-effect="non-scaling-stroke"
+					/>
+				</g>
+				<!-- spas sync (draw-in track + flowing dashes) -->
+				<g data-route="spas">
+					<path
+						class="draw-track"
+						d="M 0 188 C 70 188, 50 280, 120 280"
+						stroke="var(--color-accent)"
+						stroke-width="1.5"
+						opacity="0.28"
+						vector-effect="non-scaling-stroke"
+						pathLength="1"
+					/>
+					<path
+						class="flow-path"
+						d="M 0 188 C 70 188, 50 280, 120 280"
+						stroke="var(--color-accent)"
+						stroke-width="1.5"
+						vector-effect="non-scaling-stroke"
+					/>
+				</g>
+				<g data-route="spas">
+					<path
+						class="draw-track"
+						d="M 0 224 C 70 224, 50 280, 120 280"
+						stroke="var(--color-accent)"
+						stroke-width="1.5"
+						opacity="0.28"
+						vector-effect="non-scaling-stroke"
+						pathLength="1"
+					/>
+					<path
+						class="flow-path"
+						d="M 0 224 C 70 224, 50 280, 120 280"
+						stroke="var(--color-accent)"
+						stroke-width="1.5"
+						vector-effect="non-scaling-stroke"
+					/>
+				</g>
+				<g data-route="spas">
+					<path
+						class="draw-track"
+						d="M 0 260 C 70 260, 50 280, 120 280"
+						stroke="var(--color-accent)"
+						stroke-width="1.5"
+						opacity="0.28"
+						vector-effect="non-scaling-stroke"
+						pathLength="1"
+					/>
+					<path
+						class="flow-path"
+						d="M 0 260 C 70 260, 50 280, 120 280"
+						stroke="var(--color-accent)"
+						stroke-width="1.5"
+						vector-effect="non-scaling-stroke"
+					/>
+				</g>
+				<!-- ports -->
+				<circle data-target-port="git" cx="120" cy="50" r="3" fill="var(--color-raised)" stroke="var(--color-line-strong)" stroke-width="1.5" vector-effect="non-scaling-stroke" />
+				<circle data-target-port="spas" cx="120" cy="280" r="3.5" fill="var(--color-raised)" stroke="var(--color-accent)" stroke-width="1.5" vector-effect="non-scaling-stroke" />
+			</svg>
+			<!-- traveling dots (motion-path set by JS) -->
+			<span class="flow-dot" style="--i: 0"></span>
+			<span class="flow-dot" style="--i: 1"></span>
+			<span class="flow-dot" style="--i: 2"></span>
+			<!-- path labels (HTML so they never distort) -->
+			<span
+				data-label="git"
+				class="absolute left-1/2 top-[9%] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full border border-line bg-ink px-2.5 py-1 font-mono text-[0.65rem] text-faint"
+				>git push</span
+			>
+			<span
+				data-label="spas"
+				class="absolute left-1/2 top-[62%] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full border border-accent/40 bg-ink px-2.5 py-1 font-mono text-[0.65rem] text-accent"
+				>spas sync</span
+			>
+		</div>
+
+		<!-- repos column -->
+		<div class="flex flex-col justify-between gap-6">
+			<div class="diagram-card rounded-2xl border border-line bg-raised/70" data-target="git">
+				<div
+					class="ui-label flex items-center justify-between border-b border-line px-5 py-3 text-faint"
+				>
+					<span class="flex items-center gap-2"><Icon name="git-branch" size={14} /> Main repository</span>
+					<span class="font-mono normal-case tracking-normal">org/my-app</span>
+				</div>
+				<p class="px-5 py-4 text-[0.82rem] leading-relaxed text-dim">
+					Your project as usual. Managed files never show up as untracked, so <span class="font-mono text-[0.9em] text-text">git add .</span> can't stage them.
+				</p>
+			</div>
+
+			<div class="diagram-card rounded-2xl border border-accent/35 bg-raised/70" data-target="spas">
+				<div
+					class="ui-label flex items-center justify-between border-b border-line px-5 py-3 text-accent"
+				>
+					<span class="flex items-center gap-2"><Icon name="database" size={14} /> Asset repository</span>
+					<span class="font-mono normal-case tracking-normal text-accent-soft">org/app-assets</span>
+				</div>
+				<p class="px-5 py-4 text-[0.82rem] leading-relaxed text-dim">
+					A private GitHub repo with its own commits and merge history for every managed file.
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- Mobile diagram: stacked -->
+	<div class="diagram mt-10 space-y-0 md:mt-12 lg:hidden" data-reveal>
+		<div class="rounded-2xl border border-line bg-raised/70">
+			<div
+				class="ui-label flex items-center justify-between border-b border-line px-5 py-3 text-faint"
+			>
+				<span>Project workspace</span>
+				<span class="font-mono normal-case tracking-normal">~/my-app</span>
+			</div>
+			<ul class="px-2.5 py-2.5 font-mono text-[0.8rem]">
+				{
+					files.map((f) => (
+						<li
+							class:list={[
+								'flex items-center gap-2.5 rounded-md px-3 py-2',
+								f.managed
+									? 'border-l-2 border-accent bg-accent/[0.09] text-accent-soft'
+									: 'border-l-2 border-transparent text-dim',
+							]}
+						>
+							<Icon
+								name={f.kind === 'folder' ? 'folder-open' : 'file-text'}
+								size={15}
+								class={f.managed ? 'text-accent' : 'text-faint'}
+							/>
+							{f.name}
+						</li>
+					))
+				}
+			</ul>
+		</div>
+
+		<div class="flex items-center gap-3 py-2 pl-8">
+			<div class="flow-v h-8 w-px"></div>
+			<span class="rounded-full border border-accent/40 bg-ink px-2.5 py-1 font-mono text-[0.65rem] text-accent">spas sync</span>
+		</div>
+
+		<div class="rounded-2xl border border-accent/35 bg-raised/70">
+			<div
+				class="ui-label flex items-center justify-between border-b border-line px-5 py-3 text-accent"
+			>
+				<span class="flex items-center gap-2"><Icon name="database" size={14} /> Asset repository</span>
+				<span class="font-mono normal-case tracking-normal text-accent-soft">org/app-assets</span>
+			</div>
+			<p class="px-5 py-4 text-[0.82rem] leading-relaxed text-dim">
+				Private GitHub repo with dedicated history for managed files.
+			</p>
+		</div>
+
+		<div class="flex items-center gap-3 py-2 pl-8">
+			<div class="h-8 w-px bg-line-strong [background-image:repeating-linear-gradient(180deg,var(--color-line-strong)_0_4px,transparent_4px_9px)]"></div>
+			<span class="rounded-full border border-line bg-ink px-2.5 py-1 font-mono text-[0.65rem] text-faint">git push</span>
+		</div>
+
+		<div class="rounded-2xl border border-line bg-raised/70">
+			<div
+				class="ui-label flex items-center justify-between border-b border-line px-5 py-3 text-faint"
+			>
+				<span class="flex items-center gap-2"><Icon name="git-branch" size={14} /> Main repository</span>
+				<span class="font-mono normal-case tracking-normal">org/my-app</span>
+			</div>
+			<p class="px-5 py-4 text-[0.82rem] leading-relaxed text-dim">
+				Your project as usual. Managed files never show up as untracked.
+			</p>
+		</div>
+	</div>
+
+	<!-- command strip -->
+	<ol
+		class="mt-6 grid overflow-hidden rounded-2xl border border-line bg-raised/60 sm:grid-cols-3"
+	>
+		{
+			[
+				{ cmd: 'spas link', desc: 'Connect the workspace to a separate GitHub repository.' },
+				{ cmd: 'spas add', desc: 'Choose files and folders; exclusion rules stay local.' },
+				{ cmd: 'spas sync', desc: 'Commit local changes, merge remote ones, push, and update the workspace.' },
+			].map((s, i) => (
+				<li
+					class:list={[
+						'relative p-5 md:p-6',
+						{ 'border-t border-line sm:border-l sm:border-t-0': i > 0 },
+					]}
+					data-reveal
+					style={`--reveal-delay: ${i * 90}ms`}
+				>
+					<code class="font-mono text-[0.9rem] font-medium text-accent">{s.cmd}</code>
+					<p class="mt-1.5 text-[0.82rem] leading-relaxed text-dim">{s.desc}</p>
+					{i < 2 && (
+						<span
+							class="absolute -right-3 top-1/2 z-10 hidden h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-ink text-faint sm:flex"
+							aria-hidden="true"
+						>
+							<Icon name="arrow-right" size={12} />
+						</span>
+					)}
+				</li>
+			))
+		}
+	</ol>
+</section>
+
+<style>
+	:global(.js) .draw-track {
+		stroke-dasharray: 1;
+		stroke-dashoffset: 1;
+		transition: stroke-dashoffset 1.1s var(--ease-out-expo);
+	}
+	:global(.js) .diagram.is-in .draw-track {
+		stroke-dashoffset: 0;
+	}
+	:global(.js) .flow-path {
+		opacity: 0;
+		transition: opacity 0.6s var(--ease-soft) 0.7s;
+	}
+	:global(.js) .diagram.is-in .flow-path {
+		opacity: 0.9;
+	}
+</style>

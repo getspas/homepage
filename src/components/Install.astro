@@ -1,0 +1,79 @@
+---
+import Icon from './Icon.astro';
+import NoteSegments from './NoteSegments.astro';
+import { installChannels } from '../lib/install';
+import { tokenizeCommand } from '../lib/shell';
+
+interface Props {
+	id: string;
+	class?: string;
+}
+
+const { id, class: className } = Astro.props;
+---
+
+<div id={id} class:list={['install', className]} data-install>
+	<div
+		class="install-opts"
+		role="radiogroup"
+		aria-label="Install method"
+		style={`--n: ${installChannels.length}`}
+	>
+		{
+			installChannels.map((c, i) => (
+				<>
+					<input
+						type="radio"
+						class="sr-only"
+						name={id}
+						id={`${id}-${c.id}`}
+						value={c.id}
+						checked={i === 0}
+					/>
+					<label for={`${id}-${c.id}`} class="install-tab">
+						{c.label}
+						<span class="sr-only">, {c.name}</span>
+					</label>
+					<div class="install-panel">
+						{c.lines.length > 0 ? (
+							<>
+								<div class="install-cmds">
+									{c.lines.map((line) => (
+										<div class="flex items-start gap-3 font-mono text-[0.78rem]">
+											<span aria-hidden="true" class="sx-prompt select-none">
+												$
+											</span>
+											<code class="min-w-0 flex-1 text-text">
+												{tokenizeCommand(line).map((t, i) => (<>{i > 0 && ' '}<span class={`sx-${t.kind} inline-block max-w-full`} style="overflow-wrap: anywhere">{t.text}</span></>))}
+											</code>
+										</div>
+									))}
+								</div>
+								<p class="install-note">
+									<Icon name="info" size={13} class="mt-[3px] shrink-0" />
+									<span>
+										<NoteSegments segments={c.note} />
+									</span>
+								</p>
+								<button
+									class="install-copy copy-btn h-8 w-8 rounded-md"
+									data-copy={c.lines.join('\n')}
+									aria-label={`Copy ${c.name} install command`}
+								>
+									<Icon name="copy" size={15} />
+									<Icon name="check" size={15} class="hidden" />
+								</button>
+							</>
+						) : (
+							<div class="install-cmds">
+								<p class="text-[0.8rem] leading-relaxed text-dim">
+									<NoteSegments segments={c.note} />
+								</p>
+							</div>
+						)}
+					</div>
+				</>
+			))
+		}
+	</div>
+</div>

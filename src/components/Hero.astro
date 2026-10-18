@@ -1,0 +1,78 @@
+---
+import Icon from './Icon.astro';
+import Terminal from './Terminal.astro';
+import Install from './Install.astro';
+import { installGuideUrl } from '../lib/install';
+---
+
+<section class="relative overflow-hidden">
+	<!-- ambient background -->
+	<div class="hero-grid pointer-events-none absolute inset-0" aria-hidden="true"></div>
+	<div class="hero-glow ambient-drift pointer-events-none absolute -inset-10" aria-hidden="true"></div>
+
+	<div
+		class="relative mx-auto grid max-w-6xl gap-14 px-5 pb-16 pt-28 md:px-8 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:gap-10 lg:pb-24 lg:pt-36"
+	>
+		<div class="min-w-0">
+			<p
+				class="mono-label inline-flex items-center gap-2 rounded-full border border-line bg-raised/60 px-3 py-1.5"
+				data-enter
+			>
+				Secure Private Asset Sync
+			</p>
+
+			<h1
+				class="mt-6 font-display text-[2.6rem] font-semibold leading-[1.03] tracking-[-0.035em] md:text-[3.75rem] lg:text-[4rem]"
+				data-enter
+				data-split
+				style="--reveal-delay: 70ms"
+			>
+				Private files.<br />
+				Normal paths.<br />
+				<span class="text-accent">Separate history.</span>
+			</h1>
+
+			<p
+				class="mt-5 max-w-lg text-base leading-relaxed text-dim md:text-[1.05rem]"
+				data-enter
+				style="--reveal-delay: 140ms"
+			>
+				SPAS is an open-source CLI that keeps test data, local setup, AI instructions, and internal docs out of your main repo. It versions them in a separate GitHub repo, so every machine and teammate can get the same files at the same paths.
+			</p>
+
+			<div class="mt-8" data-enter style="--reveal-delay: 210ms">
+				<Install id="install" class="w-full max-w-[34rem]" />
+			</div>
+
+			<div
+				class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-3"
+				data-enter
+				style="--reveal-delay: 260ms"
+			>
+				<a
+					href="https://github.com/getspas/spas"
+					target="_blank"
+					rel="noopener"
+					class="btn btn-ghost h-10 px-4 text-[0.85rem]"
+				>
+					<Icon name="github-logo" size={17} />
+					GitHub
+				</a>
+				<p class="text-[0.8rem] text-faint">
+					Requires Git 2.43.1+ <span aria-hidden="true">·</span>{' '}
+					<a
+						href={installGuideUrl}
+						target="_blank"
+						rel="noopener"
+						class="text-dim underline decoration-line-strong underline-offset-4 transition-colors hover:text-accent-soft"
+						>Install guide</a
+					>
+				</p>
+			</div>
+		</div>
+
+		<div class="relative min-w-0">
+			<Terminal />
+		</div>
+	</div>
+</section>

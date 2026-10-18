@@ -1,0 +1,77 @@
+---
+import Icon from './Icon.astro';
+// The animated terminal demo. The full transcript is rendered statically in
+// .term-static (screen readers + no-JS, and it defines the height at every
+// width); JS types the same transcript into the absolutely-positioned
+// .term-live overlay once, and the replay button restarts it.
+---
+
+<div
+	id="hero-terminal"
+	class="term relative overflow-hidden"
+	data-enter
+	style="--reveal-delay: 220ms"
+>
+	<!-- window chrome -->
+	<div class="flex items-center gap-2 border-b border-line px-4 py-2.5">
+		<span class="h-2.5 w-2.5 rounded-full bg-[#3a465a]"></span>
+		<span class="h-2.5 w-2.5 rounded-full bg-[#3a465a]"></span>
+		<span class="h-2.5 w-2.5 rounded-full bg-[#3a465a]"></span>
+		<span class="ml-3 text-[0.7rem] text-faint">~/my-app · zsh</span>
+		<button
+			id="term-replay"
+			type="button"
+			class="term-action ml-auto flex h-7 items-center gap-1.5 rounded-md px-2 text-[0.7rem]"
+			aria-label="Replay terminal demo"
+			hidden
+		>
+			<Icon name="arrow-counter-clockwise" size={13} />
+			<span>replay</span>
+		</button>
+	</div>
+
+	<div id="term-body" class="term-body relative px-4 py-3.5">
+		<!-- static final transcript (kept in the a11y tree; JS types over it) -->
+		<div class="term-static">
+			<div class="term-line"><span class="t-prompt">❯</span> <span class="t-cmd">spas link acme/app-assets <span class="t-flags">--transport ssh</span></span></div>
+			<div class="term-line"><span class="t-ok">✓</span> <span class="t-dim">linked to acme/app-assets (private) · main</span></div>
+			<div class="term-line"><span class="t-prompt">❯</span> <span class="t-cmd">spas add <span class="t-path">testdata/ .env.local AGENTS.md</span></span></div>
+			<div class="term-line"><span class="t-ok">+</span> <span class="t-path">testdata/mock-api.json</span></div>
+			<div class="term-line"><span class="t-ok">+</span> <span class="t-path">.env.local</span></div>
+			<div class="term-line"><span class="t-ok">+</span> <span class="t-path">AGENTS.md</span></div>
+			<div class="term-line"><span class="t-dim">3 files managed, excluded via .git/info/exclude</span></div>
+			<div class="term-line"><span class="t-prompt">❯</span> <span class="t-cmd">git status --short</span></div>
+			<div class="term-line"><span class="t-dim">(no output: managed files stay invisible to your repo)</span></div>
+			<div class="term-line"><span class="t-prompt">❯</span> <span class="t-cmd">spas sync <span class="t-flags">-m "add local files"</span></span></div>
+			<div class="term-line"><span class="t-dim">snapshot 3 files · commit · merge · push</span></div>
+			<div class="term-line"><span class="t-ok">✓</span> <span class="t-dim">synced to acme/app-assets at 4f2a9d1</span></div>
+			<div class="term-line"><span class="t-prompt">❯</span> <span class="term-caret"></span></div>
+		</div>
+		<div id="term-live" class="term-live absolute inset-0 px-4 py-3.5" aria-hidden="true"></div>
+	</div>
+</div>
+
+<script type="application/json" id="term-script">
+	[
+		{ "type": "cmd", "segments": [["spas link ", "t-cmd"], ["acme/app-assets", "t-path"], [" --transport ssh", "t-flags"]] },
+		{ "type": "out", "lines": [
+			[["✓", "t-ok"], [" linked to acme/app-assets (private) · main", "t-dim"]]
+		] },
+		{ "type": "cmd", "segments": [["spas add ", "t-cmd"], ["testdata/ .env.local AGENTS.md", "t-path"]] },
+		{ "type": "out", "lines": [
+			[["+", "t-ok"], [" testdata/mock-api.json", "t-path"]],
+			[["+", "t-ok"], [" .env.local", "t-path"]],
+			[["+", "t-ok"], [" AGENTS.md", "t-path"]],
+			[["3 files managed, excluded via .git/info/exclude", "t-dim"]]
+		] },
+		{ "type": "cmd", "segments": [["git status --short", "t-cmd"]] },
+		{ "type": "out", "lines": [
+			[["(no output: managed files stay invisible to your repo)", "t-dim"]]
+		] },
+		{ "type": "cmd", "segments": [["spas sync ", "t-cmd"], ["-m \"add local files\"", "t-flags"]] },
+		{ "type": "out", "lines": [
+			[["snapshot 3 files · commit · merge · push", "t-dim"]],
+			[["✓", "t-ok"], [" synced to acme/app-assets at 4f2a9d1", "t-dim"]]
+		] }
+	]
+</script>

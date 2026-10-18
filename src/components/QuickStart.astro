@@ -1,0 +1,106 @@
+---
+import Icon from './Icon.astro';
+
+const steps = [
+	{
+		label: 'Install',
+		// winget-pending: restore 'Homebrew, WinGet, Scoop, a .deb or .rpm, or Go.'
+		desc: 'Homebrew, Scoop, a .deb or .rpm, or Go.',
+		link: { text: 'Pick a command', href: '#install' },
+	},
+	{
+		label: 'Link & add',
+		desc: 'Link the workspace to an empty GitHub repo, then add the files and folders to manage.',
+	},
+	{
+		label: 'Sync',
+		desc: 'Preview with --dry-run, then commit and push.',
+	},
+];
+---
+
+<section id="quickstart" class="section relative mx-auto max-w-6xl px-5 md:px-8">
+	<div class="grid items-start gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-16">
+		<div data-reveal>
+			<h2 class="section-title" data-split>
+				From install to first sync in three steps.
+			</h2>
+			<p class="section-lead">
+				You need Git 2.43.1 or newer, GitHub access over SSH or HTTPS, and an empty repository for your assets.
+			</p>
+
+			<ol class="mt-8 space-y-5">
+				{
+					steps.map((s, i) => (
+						<li
+							class="grid grid-cols-[1.5rem_1fr] gap-x-4"
+							data-reveal
+							style={`--reveal-delay: ${120 + i * 70}ms`}
+						>
+							<span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-line bg-raised font-mono text-[0.7rem] text-accent">
+								{i + 1}
+							</span>
+							<div>
+								<p class="font-medium text-text">{s.label}</p>
+								<p class="mt-1 text-[0.92rem] leading-relaxed text-dim">
+									{s.desc}
+									{s.link && (
+										<>
+											{' '}
+											<a
+												href={s.link.href}
+												class="whitespace-nowrap underline decoration-line-strong underline-offset-4 transition-colors hover:text-accent-soft"
+											>
+												{s.link.text}
+											</a>
+										</>
+									)}
+								</p>
+							</div>
+						</li>
+					))
+				}
+			</ol>
+		</div>
+
+		<div class="term" data-reveal style="--reveal-delay: 140ms">
+			<div class="flex items-center justify-between border-b border-line px-4 py-2.5">
+				<div class="flex items-center gap-2">
+					<span class="h-2.5 w-2.5 rounded-full bg-[#3a465a]"></span>
+					<span class="h-2.5 w-2.5 rounded-full bg-[#3a465a]"></span>
+					<span class="h-2.5 w-2.5 rounded-full bg-[#3a465a]"></span>
+				</div>
+				<button
+					class="copy-btn flex h-7 items-center gap-1.5 rounded-md px-2 text-[0.7rem]"
+					data-copy="spas link acme/app-assets --transport ssh --branch main && spas add testdata/ .env.local AGENTS.md && spas sync --dry-run && spas sync"
+					aria-label="Copy all quickstart commands"
+				>
+					<Icon name="copy" size={13} />
+					<Icon name="check" size={13} class="hidden" />
+					<span>copy all</span>
+				</button>
+			</div>
+			<div class="term-body px-4 py-4">
+				<div class="term-line"><span class="t-dim"># link an empty repo, then add files to manage</span></div>
+				<div class="term-line">
+					<span class="t-prompt">❯</span>
+					<span class="t-cmd"> spas link <span class="t-path">acme/app-assets</span> <span class="t-flags">--transport ssh --branch main</span></span>
+				</div>
+				<div class="term-line">
+					<span class="t-prompt">❯</span>
+					<span class="t-cmd"> spas add <span class="t-path">testdata/ .env.local AGENTS.md</span></span>
+				</div>
+				<div class="term-line">&nbsp;</div>
+				<div class="term-line"><span class="t-dim"># preview, then ship</span></div>
+				<div class="term-line">
+					<span class="t-prompt">❯</span>
+					<span class="t-cmd"> spas sync <span class="t-flags">--dry-run</span></span>
+				</div>
+				<div class="term-line">
+					<span class="t-prompt">❯</span>
+					<span class="t-cmd"> spas sync</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

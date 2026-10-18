@@ -94,6 +94,28 @@ function initScrollSpy() {
 		.filter((el): el is HTMLElement => el !== null);
 	if (!sections.length) return;
 
+	const bar = nav.querySelector<HTMLElement>('.nav-links');
+	const pill = document.createElement('span');
+	pill.className = 'nav-pill';
+	pill.setAttribute('aria-hidden', 'true');
+	bar?.prepend(pill);
+	const placePill = () => {
+		const el = bar?.querySelector<HTMLElement>('.nav-link[aria-current="true"]');
+		if (!el) {
+			pill.classList.remove('on');
+			return;
+		}
+		const appearing = !pill.classList.contains('on');
+		if (appearing) pill.classList.add('snap');
+		pill.style.translate = `${el.offsetLeft}px 0`;
+		pill.style.width = `${el.offsetWidth}px`;
+		if (appearing) {
+			void pill.offsetWidth;
+			pill.classList.remove('snap');
+			pill.classList.add('on');
+		}
+	};
+
 	const update = () => {
 		const active = ids.find((id) => visible.get(id)) ?? null;
 		for (const { id, els } of links) {
@@ -102,7 +124,11 @@ function initScrollSpy() {
 				else el.removeAttribute('aria-current');
 			}
 		}
+		placePill();
 	};
+
+	if (bar) new ResizeObserver(placePill).observe(bar);
+	if (document.fonts) void document.fonts.ready.then(placePill);
 
 	const io = new IntersectionObserver(
 		(entries) => {

@@ -33,7 +33,7 @@ export const installChannels: InstallChannel[] = [
 		label: 'scoop',
 		name: 'Scoop',
 		lines: ['scoop bucket add getspas https://github.com/getspas/scoop-bucket', 'scoop install getspas/spas'],
-		note: ['Windows x64 and ARM64. Adds the getspas bucket, then installs.'],
+		note: ['Windows x64 and ARM64. Adds the SPAS bucket, then installs.'],
 	},
 	{
 		id: 'deb-rpm',

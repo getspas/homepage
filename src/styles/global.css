@@ -218,11 +218,15 @@ html:not(.js) .nav-shell,
 	-webkit-backdrop-filter: none;
 }
 
+.nav-shell .btn {
+	border-radius: 9999px;
+}
+
 .nav-progress {
 	position: absolute;
 	bottom: -1px;
-	left: 1.5rem;
-	right: 1.5rem;
+	left: 1.625rem;
+	right: 1.625rem;
 	height: 1px;
 	background: color-mix(in oklab, var(--color-accent) 70%, transparent);
 	transform-origin: left;
